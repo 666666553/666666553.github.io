@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lily | 履歴書</title>
+    <meta name="description" content="Lily - 自己ＰＲ">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f1118',
+                        darker: '#090b10',
+                        accent: '#8b7fd9',
+                        accentLight: '#b4a9ed',
+                        surface: '#181b26',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+            }
+            .card-hover {
+                transition: all 0.25s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 12px 30px rgba(139,127,217,0.15);
+            }
+            .nav-scrolled {
+                background-color: rgba(15,17,24,0.92);
+                backdrop-filter: blur(10px);
+            }
+            .fade-in {
+                opacity: 0;
+                transform: translateY(18px);
+                transition: opacity 0.6s ease, transform 0.6s ease;
+            }
+            .fade-in.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1118;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8b7fd9;
+            border-radius: 3px;
+        }
+        .lang-dropdown {
+            position: relative;
+        }
+        .lang-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 4px;
+            background: #181b26;
+            border-radius: 6px;
+            padding: 6px 0;
+            min-width: 90px;
+            display: none;
+            z-index: 10;
+        }
+        .lang-menu.show {
+            display:block;
+        }
+        .lang-menu button {
+            width:100%;
+            text-align:left;
+            padding:6px 12px;
+            color:#ccc;
+            background:transparent;
+        }
+        .lang-menu button:hover {
+            color:#8b7fd9;
+            background:#222736;
+        }
+    </style>
+</head>
+<body class="bg-dark text-gray-200 antialiased">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-5 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-xl font-semibold text-accentLight">Lily</a>
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex gap-8 text-sm items-center">
+                <a href="#about" data-i18n="navAbout" class="hover:text-accent transition-colors">About Me</a>
+                <a href="#experience" data-i18n="navExp" class="hover:text-accent transition-colors">Experience</a>
+                <a href="#education" data-i18n="navEdu" class="hover:text-accent transition-colors">Education</a>
+                <a href="#projects" data-i18n="navProject" class="hover:text-accent transition-colors">Projects</a>
+                <a href="#skills" data-i18n="navSkill" class="hover:text-accent transition-colors">Skills</a>
+                <a href="#cert" data-i18n="navCert" class="hover:text-accent transition-colors">Certificates</a> 
+                <!-- Language Switcher Desktop -->
+                <div class="lang-dropdown">
+                    <button id="langBtnDesktop" class="flex items-center gap-1 hover:text-accent">
+                        <span id="currentLangDesktop">日本語</span>
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div id="langMenuDesktop" class="lang-menu">
+                        <button data-lang="ja">日本語</button>
+                        <button data-lang="zh">中文</button>
+                        <button data-lang="en">English</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="menuBtn" class="md:hidden text-xl">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-darker px-5 pb-5">
+            <div class="flex flex-col gap-4 text-sm">
+                <a href="#about" data-i18n="navAbout" class="hover:text-accent transition-colors">About Me</a>
+                <a href="#experience" data-i18n="navExp" class="hover:text-accent transition-colors">Experience</a>
+                <a href="#education" data-i18n="navEdu" class="hover:text-accent transition-colors">Education</a>
+                <a href="#projects" data-i18n="navProject" class="hover:text-accent transition-colors">Projects</a>
+                <a href="#skills" data-i18n="navSkill" class="hover:text-accent transition-colors">Skills</a>
+                <a href="#cert" data-i18n="navCert" class="hover:text-accent transition-colors">Certificates</a>
+                <div class="pt-2 border-t border-gray-700">
+                    <p class="text-gray-500 text-xs mb-2">Language</p>
+                    <div class="flex gap-3">
+                        <button class="mobile-lang-btn hover:text-accent" data-lang="ja">日本語</button>
+                        <button class="mobile-lang-btn hover:text-accent" data-lang="zh">中文</button>
+                        <button class="mobile-lang-btn hover:text-accent" data-lang="en">EN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center pt-24 pb-16 px-5">
+        <div class="max-w-6xl mx-auto fade-in">
+            <p class="text-accent mb-3 text-sm tracking-widest" data-i18n="heroTag">GAME OPERATOR / JP COMMUNITY / PRODUCT OP</p>
+            <h1 class="text-[clamp(2.8rem,6vw,4.2rem)] font-bold text-white leading-tight">Lily</h1>
+            <h2 class="text-[clamp(1.1rem,2vw,1.4rem)] text-gray-400 mt-3 max-w-2xl" data-i18n="heroTitle">
+                自己ＰＲ
+            </h2>
+            <p class="mt-6 text-gray-400 max-w-xl leading-relaxed" data-i18n="heroDesc">
+                日本語N1・日語専八。ゲームローカライズ、Discord/X/LINEコミュニティ運営、IPコラボ企画、プロダクト運営の実務経験を保有。日本プレイヤー視点でローカライズ・コンテンツ企画・ユーザーフィードバックの循環を構築できます。
+            </p>
+            <div class="mt-10 flex flex-wrap gap-4">
+                <a href="#experience" class="bg-accent text-dark px-5 py-2.5 rounded font-medium hover:bg-accentLight transition-colors" data-i18n="heroBtnProject">
+                    View Selected Projects
+                </a> 
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me -->
+    <section id="about" class="py-20 px-5">
+        <div class="max-w-6xl mx-auto fade-in">
+            <h2 class="text-2xl font-bold text-white mb-10 border-l-4 border-accent pl-3" data-i18n="aboutHead">About Me</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-lg text-accentLight mb-4" data-i18n="aboutJobDir">職業方向</h3>
+                    <p class="text-gray-300 leading-relaxed" data-i18n="aboutJobDirText">
+                        学歴：延辺大学大学院　日本語言語文学
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg text-accentLight mb-4" data-i18n="aboutLang">言語能力</h3>
+                    <p class="text-gray-300 leading-relaxed" data-i18n="aboutLangText">
+                        日本語N1、日本語専八。ビジネス日本語での文案作成、告知・SNS投稿・契約関連の調整対応可能。英語：CET-6。中国語ネイティブ。
+                    </p>
+                </div>
+            </div>
+            <div class="mt-10">
+                <h3 class="text-lg text-accentLight mb-4" data-i18n="aboutWorkStyle">仕事の進め方</h3>
+                <p class="text-gray-300 leading-relaxed" data-i18n="aboutWorkStyleText">
+                    日本プレイヤーの文化習慣を理解し、直訳ではなく文化適応を優先。SNSデータ・コミュニティの声をもとにコンテンツを改善、イベントやIPコラボの全フロー推進、リリース後の振り返りまで実施。
+                </p>
+            </div>
+            <div class="mt-10">
+                <h3 class="text-lg text-accentLight mb-4" data-i18n="aboutGameExp">ゲーム経験</h3>
+                <p class="text-gray-300 leading-relaxed" data-i18n="aboutGameExpText">
+                    モバイルゲーム：刀剣乱舞、アンスタ、恋と深空、崩壊：スターレイル、蛋仔派对、第五人格、The Spike。コンソール（NS）乙女AVG：剣が君、NORN9 ノルン+ノネット、プレイ時間1200時間以上。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" class="py-20 px-5 bg-darker">
+        <div class="max-w-6xl mx-auto fade-in">
+            <h2 class="text-2xl font-bold text-white mb-10 border-l-4 border-accent pl-3" data-i18n="expHead">Experience</h2>
+            <div class="space-y-10">
+                <!-- タンワン -->
+                <div class="bg-surface p-6 rounded-lg card-hover">
+                    <div class="flex flex-wrap justify-between items-start gap-2">
+                        <h3 class="text-lg font-semibold text-white">タンワン</h3>
+                        <span class="text-accent text-sm">2026.4 - 2026.6</span>
+                    </div>
+                    <p class="text-gray-400 mt-1" data-i18n="exp1Title">日本語ゲーム運営 / 日语游戏运营</p>
+                    <ul class="mt-4 space-y-2 text-gray-300 text-sm">
+                        <li data-i18n="exp1Li1">• ローカライズ運営：ターン制カードRPGの日本版テキストローカライズとリライト。UI、システム、キャラクター、スキル、メールなど全シーン、計4万字。日本プレイヤーの習慣に合わせた表現調整。</li>
+                        <li data-i18n="exp1Li2">• コミュニティ運営：SNSの投稿計画・運用、美術チームと連携し、バージョンイベント・期間限定企画の日本語文案・宣伝素材を作成して定時公開。</li>
+                        <li data-i18n="exp1Li3">• ユーザー対応：LINE/Xで日常対応、VIPサポート、プレイヤーの質問・DM返信、バグ・要望・課金関連のフィードバックを整理し、企画・開発チームに連携。</li>
+                    </ul>
+                </div>
+                <!-- バイドゥ -->
+                <div class="bg-surface p-6 rounded-lg card-hover">
+                    <div class="flex flex-wrap justify-between items-start gap-2">
+                        <h3 class="text-lg font-semibold text-white">バイドゥ</h3>
+                        <span class="text-accent text-sm">2026.1 - 2026.3</span>
+                    </div>
+                    <p class="text-gray-400 mt-1" data-i18n="exp2Title">日本語入力法PM（Simeji）/ 日语输入法PM（Simeji）</p>
+                    <ul class="mt-4 space-y-2 text-gray-300 text-sm">
+                        <li data-i18n="exp2Li1">• プロダクト運営：AI画像・動画生成など流行機能を掘り起こし、Tabモジュール企画・素材制作・上架、データ監視で効果を振り返り、AI機能を強化しユーザー活性を向上。</li>
+                        <li data-i18n="exp2Li2">• 市場調査：入力法業界、OS適応、AIトレンドを追跡。10万件以上のユーザー行動データ・SNSの声を分析、市場レポートを作成し、機能企画・差別化戦略の根拠とした。</li>
+                        <li data-i18n="exp2Li3">• プロダクトデリバリー：要求整理、PRD作成、多チームのレビュー会に参加、開発/デザイン/テストのスケジュール調整、QAと連携してリリースを確保。</li>
+                    </ul>
+                </div>
+                <!-- バイトダンス -->
+                <div class="bg-surface p-6 rounded-lg card-hover">
+                    <div class="flex flex-wrap justify-between items-start gap-2">
+                        <h3 class="text-lg font-semibold text-white">バイトダンス</h3>
+                        <span class="text-accent text-sm">2025.7 - 2025.9</span>
+                    </div>
+                    <p class="text-gray-400 mt-1" data-i18n="exp3Title">ゲームライブ配信クリエイター運営（TikTok Live Japan） / 游戏直播创作者运营（TikTok Live Japan）</p>
+                    <ul class="mt-4 space-y-2 text-gray-300 text-sm">
+                        <li data-i18n="exp3Li1">• Discordコミュニティ：配信者獲得・定着を目的にDiscordを拠点としたコミュニティ企画。タグ管理、フィードバック高速対応、500名以上の新規ユーザーを誘引、配信者の活性・定着率を改善。</li>
+                        <li data-i18n="exp3Li2">• IPマーケティング：第五人格日本版コラボ企画の全体推進。要求連携、リソース調整、見積、契約、クロスチーム調整。IPコラボを実装し、認知度・DLを向上、プラットフォームとメーカーのエコシステムを強化。</li>
+                        <li data-i18n="exp3Li3">• 監修連携：宣伝素材・配信内容の事前確認、表現の調整。権利元監修、修正点を50名以上のクリエイターに伝達、修正・確定、フィードバックループを完了。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section id="education" class="py-20 px-5">
+        <div class="max-w-6xl mx-auto fade-in">
+            <h2 class="text-2xl font-bold text-white mb-10 border-l-4 border-accent pl-3" data-i18n="eduHead">Education</h2>
+            <div class="space-y-8">
+                <div class="bg-surface p-6 rounded-lg">
+                    <div class="flex flex-wrap justify-between items-start gap-2">
+                        <h3 class="text-lg font-semibold text-white">延辺大学（211）</h3>
+                        <span class="text-accent text-sm">2023.9 - 2026.6 大学院</span>
+                    </div>
+                    <p class="text-gray-400 mt-1" data-i18n="edu1Major">日本語言語文学専攻（日本語クラスTA）</p>
+                    <p class="text-gray-300 text-sm mt-3" data-i18n="edu1Info">GPA：3.8/4.5。主な科目：AI翻訳、日本文化史、異文化研究、文学心理学、比較文学・文化研究など</p>
+                </div>
+                <div class="bg-surface p-6 rounded-lg">
+                    <div class="flex flex-wrap justify-between items-start gap-2">
+                        <h3 class="text-lg font-semibold text-white">東北電力大学</h3>
+                        <span class="text-accent text-sm">2019.9 - 2023.7 学部</span>
+                    </div>
+                    <p class="text-gray-400 mt-1" data-i18n="edu2Major">日本語専攻（学生会サービス部幹事）</p>
+                    <p class="text-gray-300 text-sm mt-3" data-i18n="edu2Info">GPA：4.2/5。主な科目：逐次通訳理論と実践、ビジネス日本語、日本文化概論、異文化交流、日本語聴解など</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selected Projects -->
+    <section id="projects" class="py-20 px-5 bg-darker">
+        <div class="max-w-6xl mx-auto fade-in">
+            <h2 class="text-2xl font-bold text-white mb-10 border-l-4 border-accent pl-3" data-i18n="projectHead">Selected Projects</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Project Card 1：贪玩本地化 -->
+                <div class="bg-surface rounded-lg overflow-hidden card-hover cursor-pointer project-card" data-target="case1">
+                    <div class="p-6">
+                        <span class="text-xs px-2 py-1 bg-accent/15 text-accent rounded">JP Localization</span>
+                        <h3 class="text-lg font-semibold mt-3 text-white" data-i18n="case1Title">ターン制カードRPG 日本版ローカライズ</h3>
+                        <p class="text-gray-400 mt-2 text-sm" data-i18n="case1Sub">4万字全シーン文案の翻訳・文化調整、UI/キャラ/スキル/メール対応</p>
+                        <p class="mt-4 text-accent text-sm flex items-center" data-i18n="viewCase">View Case Study <i class="fa fa-arrow-right ml-2"></i></p>
+                    </div>
+                </div>
+                <!-- Project Card 2：字节第五人格IP联动 -->
+                <div class="bg-surface rounded-lg overflow-hidden card-hover cursor-pointer project-card" data-target="case2">
+                    <div class="p-6">
+                        <span class="text-xs px-2 py-1 bg-accent/15 text-accent rounded">IP Marketing</span>
+                        <h3 class="text-lg font-semibold mt-3 text-white" data-i18n="case2Title">第五人格 日本版IPコラボ企画推進</h3>
+                        <p class="text-gray-400 mt-2 text-sm" data-i18n="case2Sub">権利元との調整、素材監修、クリエイター連携、宣伝フロー全体管理</p>
+                        <p class="mt-4 text-accent text-sm flex items-center" data-i18n="viewCase">View Case Study <i class="fa fa-arrow-right ml-2"></i></p>
+                    </div>
+                </div>
+                <!-- Project Card3：Simeji输入法产品运营 -->
+                <div class="bg-surface rounded-lg overflow-hidden card-hover cursor-pointer project-card" data-target="case3">
+                    <div class="p-6">
+                        <span class="text-xs px-2 py-1 bg-accent/15 text-accent rounded">Product Operation</span>
+                        <h3 class="text-lg font-semibold mt-3 text-white" data-i18n="case3Title">Simeji日本語入力法 AI機能企画運営</h3>
+                        <p class="text-gray-400 mt-2 text-sm" data-i18n="case3Sub">AI画像・動画生成Tab企画、ユーザー調査、データ分析、機能リリース推進</p>
+                        <p class="mt-4 text-accent text-sm flex items-center" data-i18n="viewCase">View Case Study <i class="fa fa-arrow-right ml-2"></i></p>
+                    </div>
+                </div>
+                <!-- Project Card4：TikTok Discord社区 -->
+                <div class="bg-surface rounded-lg overflow-hidden card-hover cursor-pointer project-card" data-target="case4">
+                    <div class="p-6">
+                        <span class="text-xs px-2 py-1 bg-accent/15 text-accent rounded">Discord Community</span>
+                        <h3 class="text-lg font-semibold mt-3 text-white" data-i18n="case4Title">TikTok Live Japan 配信者Discordコミュニティ運営</h3>
+                        <p class="text-gray-400 mt-2 text-sm" data-i18n="case4Sub">配信者獲得・定着企画、タグ体系構築、フィードバックループ、500人新規流入</p>
+                        <p class="mt-4 text-accent text-sm flex items-center" data-i18n="viewCase">View Case Study <i class="fa fa-arrow-right ml-2"></i></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Study Modal -->
+    <div id="caseModal" class="fixed inset-0 bg-black/85 z-[100] hidden overflow-y-auto">
+        <div class="min-h-screen flex items-start justify-center py-16 px-4">
+            <div class="bg-surface max-w-3xl w-full rounded-lg relative p-7">
+                <button id="closeModal" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
+                    <i class="fa fa-times"></i>
+                </button>
+                <div id="modalContent">
+                    <!-- case1 贪玩本地化 -->
+                    <div id="case1" class="case-content hidden">
+                        <span class="text-xs px-2 py-1 bg-accent/15 text-accent rounded">JP Localization</span>
+                        <h3 class="text-xl font-bold mt-3 text-white" data-i18n="case1Title">ターン制カードRPG 日本版ローカライズ</h3>
+                        <div class="mt-6 space-y-5 text-gray-300 text-sm">
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseBg">📌 プロジェクト背景 / 项目背景</h4>
+                                <p data-i18n="case1Bg">国内開発のターン制カードRPGを日本市場にリリースするため、全画面テキストのローカライズとリライトが必要。直訳ではなく、日本ソシャゲの慣習に合わせた表現に調整。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseUser">👥 対象ユーザー / 目标用户</h4>
+                                <p data-i18n="case1User">日本のソーシャルゲームプレイヤー、カードRPG層。UIやスキル説明が分かりやすく、キャラクター台詞が世界観に合っていることを重視。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseAnalysis">📊 私の分析 / 我的分析</h4>
+                                <p data-i18n="case1Ana">日本プレイヤーは硬い翻訳文に敏感。ゲーム内の告知、スキル説明、報酬表記に業界定型表現を使用、キャラ台詞は性格に合わせて語尾や口調を調整。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseAction">✅ 実施したアクション / 具体行动</h4>
+                                <p data-i18n="case1Act">UI、システム、英雄、スキル、イベントメールなど全シーン、計4万字の文案を翻訳・校正。美術チームと連携し宣伝文案も作成。SNS投稿の原稿も担当。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseResult">🏁 結果と振り返り / 结果与复盘</h4>
+                                <p data-i18n="case1Res">リリース版のローカライズ納品完了。プレイヤーから「不自然な翻訳」に関する問い合わせを抑え、バージョンリリース後も継続的にコミュニティからフィードバックを回収。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- case2 第五人格IP联动 -->
+                    <div id="case2" class="case-content hidden">
+                        <span class="text-xs px-2 py-1 bg-accent/15 text-accent rounded">IP Marketing</span>
+                        <h3 class="text-xl font-bold mt-3 text-white" data-i18n="case2Title">第五人格 日本版IPコラボ企画推進</h3>
+                        <div class="mt-6 space-y-5 text-gray-300 text-sm">
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseBg">📌 プロジェクト背景 / 项目背景</h4>
+                                <p data-i18n="case2Bg">第五人格日本版と人気IPのコラボ企画をTikTok Live Japanで実施。権利元監修、素材確認、クリエイター宣伝の全フロー管理が必要。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseUser">👥 対象ユーザー / 目标用户</h4>
+                                <p data-i18n="case2User">第五人格日本プレイヤー、IPファン、TikTokゲーム配信視聴者。IPの設定を守りつつ、ゲームの宣伝効果を最大化する。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseAnalysis">📊 私の分析 / 我的分析</h4>
+                                <p data-i18n="case2Ana">IPコラボは権利監修ルールが厳格。表現ブレ・設定違反を事前に防ぐチェックリストが必要。配信者に正しい素材・説明文を配布することで統一感を保つ。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseAction">✅ 実施したアクション / 具体行动</h4>
+                                <p data-i18n="case2Act">企画要求の取りまとめ、リソース調整、見積もり・契約推進。宣伝素材・配信原稿の事前確認、権利元監修対応。50名以上のクリエイターへ修正指示伝達と進捗管理。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseResult">🏁 結果と振り返り / 结果与复盘</h4>
+                                <p data-i18n="case2Res">IPコラボイベントを無事リリース。日本でのブランド露出とダウンロード数向上に貢献、プラットフォームとゲームメーカーの連携体制を強化。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- case3 Simeji -->
+                    <div id="case3" class="case-content hidden">
+                        <span class="text-xs px-2 py-1 bg-accent/15 text-accent rounded">Product Operation</span>
+                        <h3 class="text-xl font-bold mt-3 text-white" data-i18n="case3Title">Simeji日本語入力法 AI機能企画運営</h3>
+                        <div class="mt-6 space-y-5 text-gray-300 text-sm">
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseBg">📌 プロジェクト背景 / 项目背景</h4>
+                                <p data-i18n="case3Bg">Simeji日本語入力法にAI画像・動画生成機能を追加し、若年層ユーザーの活性化を狙う。流行に合わせたTabモジュール企画と運用。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseUser">👥 対象ユーザー / 目标用户</h4>
+                                <p data-i18n="case3User">Simejiの若い日本ユーザー、SNSでスタンプ・画像を作成する層。簡単に使えるAI機能を求める。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseAnalysis">📊 私の分析 / 我的分析</h4>
+                                <p data-i18n="case3Ana">日本の若者はAI生成コンテンツをSNS投稿に使う習慣がある。入力アプリ内で完結することで導線を短縮、使用頻度を高められる。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseAction">✅ 実施したアクション / 具体行动</h4>
+                                <p data-i18n="case3Act">流行機能を調査、Tab企画・素材制作・上架設定。データ監視体制を作り、運用効果を振り返る。10万件以上のユーザーデータを分析しレポート作成、PRD作成・開発推進。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseResult">🏁 結果と振り返り / 结果与复盘</h4>
+                                <p data-i18n="case3Res">AI機能が順調にリリース、ユーザーの活性・使用時間が伸長。市場データをもとに、次期バージョンの差別化戦略を提案。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- case4 Discord社区 -->
+                    <div id="case4" class="case-content hidden">
+                        <span class="text-xs px-2 py-1 bg-accent/15 text-accent rounded">Discord Community</span>
+                        <h3 class="text-xl font-bold mt-3 text-white" data-i18n="case4Title">TikTok Live Japan 配信者Discordコミュニティ運営</h3>
+                        <div class="mt-6 space-y-5 text-gray-300 text-sm">
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseBg">📌 プロジェクト背景 / 项目背景</h4>
+                                <p data-i18n="case4Bg">TikTok Live Japanのゲーム配信者を獲得・定着させるため、Discordを拠点としたクリエイターコミュニティを構築。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseUser">👥 対象ユーザー / 目标用户</h4>
+                                <p data-i18n="case4User">日本のゲーム配信者。配信のノウハウ、プラットフォームの情報、インセンティブ情報を求める。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseAnalysis">📊 私の分析 / 我的分析</h4>
+                                <p data-i18n="case4Ana">日本の配信者はDiscordで情報交換する習慣が強い。タグ分類による問い合わせの高速対応、成功事例共有で定着率を高められる。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseAction">✅ 実施したアクション / 具体行动</h4>
+                                <p data-i18n="case4Act">コミュニティ企画立案、ユーザータグ体系を構築。問い合わせへ高速対応、配信者向け情報発信。新規勧誘施策を実施。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-accentLight font-medium mb-2" data-i18n="caseResult">🏁 結果と振り返り / 结果与复盘</h4>
+                                <p data-i18n="case4Res">500名以上の新規配信者をコミュニティに誘引。配信頻度と定着率が明確に向上、クリエイターとプラットフォームの連携ルートを安定化。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills -->
+    <section id="skills" class="py-20 px-5 bg-darker">
+        <div class="max-w-6xl mx-auto fade-in">
+            <h2 class="text-2xl font-bold text-white mb-10 border-l-4 border-accent pl-3" data-i18n="skillHead">Skills</h2>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="bg-surface p-5 rounded-lg">
+                    <h3 class="text-accentLight font-medium mb-3" data-i18n="skill1Title">日语本地化 & 文案</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="skill1Desc">ゲーム告知、SNS投稿、イベント文案作成、文化適応、校正、自然な日本語表現への調整</p>
+                </div>
+                <div class="bg-surface p-5 rounded-lg">
+                    <h3 class="text-accentLight font-medium mb-3" data-i18n="skill2Title">日本社区运营</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="skill2Desc">X / LINE / Discord アカウント運用、コメント対応、風評監視、ファンとの交流、クリエイター運営</p>
+                </div>
+                <div class="bg-surface p-5 rounded-lg">
+                    <h3 class="text-accentLight font-medium mb-3" data-i18n="skill3Title">IP・イベント企画</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="skill3Desc">IPコラボ、キャンペーン企画、権利元監修連携、ルール作成、素材確認・リリース推進</p>
+                </div>
+                <div class="bg-surface p-5 rounded-lg">
+                    <h3 class="text-accentLight font-medium mb-3" data-i18n="skill4Title">用户反馈管理</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="skill4Desc">プレイヤー意見収集・分類、週次レポート作成、コミュニティ−ローカライズ−プロダクト連携</p>
+                </div>
+                <div class="bg-surface p-5 rounded-lg">
+                    <h3 class="text-accentLight font-medium mb-3" data-i18n="skill5Title">数据分析・市場調査</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="skill5Desc">SNSインプレ・エンゲージメント集計、ユーザー行動分析、競合・業界調査、市場レポート作成</p>
+                </div>
+                <div class="bg-surface p-5 rounded-lg">
+                    <h3 class="text-accentLight font-medium mb-3" data-i18n="skill6Title">プロダクト業務</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="skill6Desc">PRD作成、要求整理、クロスチーム連携、QA調整、リリース管理、スケジュール推進</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificates -->
+    <section id="cert" class="py-20 px-5">
+        <div class="max-w-6xl mx-auto fade-in">
+            <h2 class="text-2xl font-bold text-white mb-10 border-l-4 border-accent pl-3" data-i18n="certHead">Certificates & Awards</h2>
+            <div class="bg-surface p-6 rounded-lg">
+                <ul class="space-y-3 text-gray-300">
+                    <li>• 日本語能力試験 N1</li>
+                    <li>• 日本語専門八級</li>
+                    <li>• 大学英語六級（CET-6）</li>
+                    <li>• 「人民中国杯」国際日本語翻訳コンテスト 三等賞</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-10 px-5 text-center text-gray-500 text-sm">
+        <div class="max-w-6xl mx-auto">
+            <p>© 2026 Lily | Game & JP Community Portfolio</p>
+            <p class="mt-2" data-i18n="footerSub">Designed for Japanese Game Operation Job Hunt</p>
+        </div>
+    </footer>
+
+    <!-- Back To Top -->
+    <button id="backTop" class="fixed bottom-6 right-6 bg-accent w-10 h-10 rounded-full text-dark hidden hover:bg-accentLight transition-colors">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+<script>
+const langData = {
+    ja: {
+        navAbout: "About Me",
+        navExp: "Experience",
+        navEdu: "Education",
+        navProject: "Projects",
+        navSkill: "Skills",
+        navCert: "Certificates",
+        navContact: "Contact",
+        navResume: "Resume",
+        heroTag: "GAME OPERATOR / JP COMMUNITY / PM",
+        heroTitle: "日本市場ゲーム運営・日本語コミュニティ運営・プロダクト運営 | Game Operations & Japanese Community Specialist",
+        heroDesc: "日本語N1・日語専八。ゲームローカライズ、Discord/X/LINEコミュニティ運営、IPコラボ企画、プロダクト運営の実務経験を保有。日本プレイヤー視点でローカライズ・コンテンツ企画・ユーザーフィードバックの循環を構築できます。",
+        heroBtnProject: "仕事経験を見る",
+        heroBtnResume: "履歴書DL",
+        aboutHead: "About Me",
+        aboutJobDir: "自己ＰＲ",
+        aboutJobDirText: "経験：日本市場向けゲーム運営、日本語コミュニティ運営、プロダクト運営。ローカライズ、SNS運用、IP企画、ユーザーフィードバックまで一貫して対応可能。",
+        aboutLang: "言語能力",
+        aboutLangText: "日本語N1、日本語専八。ビジネス日本語での文案作成、告知・SNS投稿・契約関連の調整対応可能。英語：CET-6。中国語ネイティブ。",
+        aboutWorkStyle: "仕事の進め方",
+        aboutWorkStyleText: "日本プレイヤーの文化習慣を理解し、直訳ではなく文化適応を優先。SNSデータ・コミュニティの声をもとにコンテンツを改善、イベントやIPコラボの全フロー推進、リリース後の振り返りまで実施。",
+        aboutGameExp: "ゲーム経験",
+        aboutGameExpText: "モバイルゲーム：刀剣乱舞、アンスタ、恋と深空、崩壊：スターレイル、蛋仔派对、第五人格、The Spike。コンソール（NS）乙女AVG：剣が君、NORN9 ノルン+ノネット、プレイ時間1200時間以上。",
+        expHead: "インターンシップ",
+        exp1Title: "日本語ゲーム運営",
+        exp1Li1: "• ローカライズ運営：ターン制カードRPGの日本版テキストローカライズとリライト。UI、システム、キャラクター、スキル、メールなど全シーン、計4万字。日本プレイヤーの習慣に合わせた表現調整。",
+        exp1Li2: "• コミュニティ運営：SNSの投稿計画・運用、美術チームと連携し、バージョンイベント・期間限定企画の日本語文案・宣伝素材を作成して定時公開。",
+        exp1Li3: "• ユーザー対応：LINE/Xで日常対応、VIPサポート、プレイヤーの質問・DM返信、バグ・要望・課金関連のフィードバックを整理し、企画・開発チームに連携。",
+        exp2Title: "日本語入力法PM（Simeji）",
+        exp2Li1: "• プロダクト運営：AI画像・動画生成など流行機能を掘り起こし、Tabモジュール企画・素材制作・上架、データ監視で効果を振り返り、AI機能を強化しユーザー活性を向上。",
+        exp2Li2: "• 市場調査：入力法業界、OS適応、AIトレンドを追跡。10万件以上のユーザー行動データ・SNSの声を分析、市場レポートを作成し、機能企画・差別化戦略の根拠とした。",
+        exp2Li3: "• プロダクトデリバリー：要求整理、PRD作成、多チームのレビュー会に参加、開発/デザイン/テストのスケジュール調整、QAと連携してリリースを確保。",
+        exp3Title: "ゲームライブ配信クリエイター運営（TikTok Live Japan）",
+        exp3Li1: "• Discordコミュニティ：配信者獲得・定着を目的にDiscordを拠点としたコミュニティ企画。タグ管理、フィードバック高速対応、500名以上の新規ユーザーを誘引、配信者の活性・定着率を改善。",
+        exp3Li2: "• IPマーケティング：第五人格日本版コラボ企画の全体推進。要求連携、リソース調整、見積、契約、クロスチーム調整。IPコラボを実装し、認知度・DLを向上、プラットフォームとメーカーのエコシステムを強化。",
+        exp3Li3: "• 監修連携：宣伝素材・配信内容の事前確認、表現の調整。権利元監修、修正点を50名以上のクリエイターに伝達、修正・確定、フィードバックループを完了。",
+        eduHead: "Education",
+        edu1Major: "日本語言語文学専攻（日本語クラスTA）",
+        edu1Info: "GPA：3.8/4.5。主な科目：AI翻訳、日本文化史、異文化研究、文学心理学、比較文学・文化研究など",
+        edu2Major: "日本語専攻（学生会サービス部幹事）",
+        edu2Info: "GPA：4.2/5。主な科目：逐次通訳理論と実践、ビジネス日本語、日本文化概論、異文化交流、日本語聴解など",
+        projectHead: "Selected Projects",
+        imgPlaceholder: "プロジェクト画像",
+        viewCase: "事例を確認する <i class=\"fa fa-arrow-right ml-2\"></i>",
+        case1Title: "ターン制カードRPG 日本版ローカライズ",
+        case1Sub: "4万字全シーン文案の翻訳・文化調整、UI/キャラ/スキル/メール対応",
+        case2Title: "第五人格 日本版IPコラボ企画推進",
+        case2Sub: "権利元との調整、素材監修、クリエイター連携、宣伝フロー全体管理",
+        case3Title: "Simeji日本語入力法 AI機能企画運営",
+        case3Sub: "AI画像・動画生成Tab企画、ユーザー調査、データ分析、機能リリース推進",
+        case4Title: "TikTok Live Japan 配信者Discordコミュニティ運営",
+        case4Sub: "配信者獲得・定着企画、タグ体系構築、フィードバックループ、500人新規流入",
+        caseBg: "📌 プロジェクト背景",
+        caseUser: "👥 対象ユーザー",
+        caseAnalysis: "📊 私の分析",
+        caseAction: "✅ 実施したアクション",
+        caseResult: "🏁 結果と振り返り",
+        case1Bg: "国内開発のターン制カードRPGを日本市場にリリースするため、全画面テキストのローカライズとリライトが必要。直訳ではなく、日本ソシャゲの慣習に合わせた表現に調整。",
+        case1User: "日本のソーシャルゲームプレイヤー、カードRPG層。UIやスキル説明が分かりやすく、キャラクター台詞が世界観に合っていることを重視。",
+        case1Ana: "日本プレイヤーは硬い翻訳文に敏感。ゲーム内の告知、スキル説明、報酬表記に業界定型表現を使用、キャラ台詞は性格に合わせて語尾や口調を調整。",
+        case1Act: "UI、システム、英雄、スキル、イベントメールなど全シーン、計4万字の文案を翻訳・校正。美術チームと連携し宣伝文案も作成。SNS投稿の原稿も担当。",
+        case1Res: "リリース版のローカライズ納品完了。プレイヤーから「不自然な翻訳」に関する問い合わせを抑え、バージョンリリース後も継続的にコミュニティからフィードバックを回収。",
+        case2Bg: "第五人格日本版と人気IPのコラボ企画をTikTok Live Japanで実施。権利元監修、素材確認、クリエイター宣伝の全フロー管理が必要。",
+        case2User: "第五人格日本プレイヤー、IPファン、TikTokゲーム配信視聴者。IPの設定を守りつつ、ゲームの宣伝効果を最大化する。",
+        case2Ana: "IPコラボは権利監修ルールが厳格。表現ブレ・設定違反を事前に防ぐチェックリストが必要。配信者に正しい素材・説明文を配布することで統一感を保つ。",
+        case2Act: "企画要求の取りまとめ、リソース調整、見積もり・契約推進。宣伝素材・配信原稿の事前確認、権利元監修対応。50名以上のクリエイターへ修正指示伝達と進捗管理。",
+        case2Res: "IPコラボイベントを無事リリース。日本でのブランド露出とダウンロード数向上に貢献、プラットフォームとゲームメーカーの連携体制を強化。",
+        case3Bg: "Simeji日本語入力法にAI画像・動画生成機能を追加し、若年層ユーザーの活性化を狙う。流行に合わせたTabモジュール企画と運用。",
+        case3User: "Simejiの若い日本ユーザー、SNSでスタンプ・画像を作成する層。簡単に使えるAI機能を求める。",
+        case3Ana: "日本の若者はAI生成コンテンツをSNS投稿に使う習慣がある。入力アプリ内で完結することで導線を短縮、使用頻度を高められる。",
+        case3Act: "流行機能を調査、Tab企画・素材制作・上架設定。データ監視体制を作り、運用効果を振り返る。10万件以上のユーザーデータを分析しレポート作成、PRD作成・開発推進。",
+        case3Res: "AI機能が順調にリリース、ユーザーの活性・使用時間が伸長。市場データをもとに、次期バージョンの差別化戦略を提案。",
+        case4Bg: "TikTok Live Japanのゲーム配信者を獲得・定着させるため、Discordを拠点としたクリエイターコミュニティを構築。",
+        case4User: "日本のゲーム配信者。配信のノウハウ、プラットフォームの情報、インセンティブ情報を求める。",
+        case4Ana: "日本の配信者はDiscordで情報交換する習慣が強い。タグ分類による問い合わせの高速対応、成功事例共有で定着率を高められる。",
+        case4Act: "コミュニティ企画立案、ユーザータグ体系を構築。問い合わせへ高速対応、配信者向け情報発信。新規勧誘施策を実施。",
+        case4Res: "500名以上の新規配信者をコミュニティに誘引。配信頻度と定着率が明確に向上、クリエイターとプラットフォームの連携ルートを安定化。",
+        skillHead: "Skills",
+        skill1Title: "日本語ローカライズ・文案作成",
+        skill1Desc: "ゲーム告知、SNS投稿、イベント文作成、文化適応、校正、自然な日本語表現への調整",
+        skill2Title: "日本コミュニティ運営",
+        skill2Desc: "X / LINE / Discord アカウント運用、コメント対応、風評監視、ファンとの交流、クリエイター運営",
+        skill3Title: "IP・イベント企画",
+        skill3Desc: "IPコラボ、キャンペーン企画、権利元監修連携、ルール作成、素材確認・リリース推進",
+        skill4Title: "ユーザーフィードバック管理",
+        skill4Desc: "プレイヤー意見収集・分類、週次レポート作成、コミュニティ−ローカライズ−プロダクト連携",
+        skill5Title: "データ分析・市場調査",
+        skill5Desc: "SNSインプレ・エンゲージメント集計、ユーザー行動分析、競合・業界調査、市場レポート作成",
+        skill6Title: "プロダクト業務",
+        skill6Desc: "PRD作成、要求整理、クロスチーム連携、QA調整、リリース管理、スケジュール推進",
+        certHead: "Certificates & Awards",
+        contactHead: "Contact",
+        contactDesc: "経歴やプロジェクトにご興味があれば、メールでご連絡ください。",
+        resumeHead: "Resume",
+        resumeSub: "履歴書PDFダウンロード",
+        resumeBtn: "履歴書をダウンロード",
+        resumeTip: "👉 PDFファイル名を resume.pdf にし、htmlと同じフォルダに置くとダウンロード可能です。",
+        footerSub: "Designed for Japanese Game Operation Job Hunt"
+    },
+    zh: {
+        navAbout: "关于我",
+        navExp: "实习经历",
+        navEdu: "教育背景",
+        navProject: "项目案例",
+        navSkill: "专业技能",
+        navCert: "证书荣誉",
+        navContact: "联系方式",
+        navResume: "简历",
+        heroTag: "简历",
+        heroTitle: "我是谁",
+        heroDesc: "日语N1、日语专八。拥有游戏本地化、Discord/X/LINE社区运营、IP联动营销、产品运营实战经验。可以站在日本玩家视角完成本地化适配、内容企划，搭建用户反馈闭环。",
+        heroBtnProject: "查看过往经历",
+        heroBtnResume: "下载简历",
+        aboutHead: "关于我",
+        aboutJobDir: "职业方向",
+        aboutJobDirText: "目标岗位：日本市场游戏运营、日语社区运营、产品运营。可独立承接本地化文案、SNS运营、IP活动企划、用户反馈闭环全流程工作。",
+        aboutLang: "语言能力",
+        aboutLangText: "日语N1、日语专业八级，可独立撰写商务日语文案、公告推文、对接版权方。英语大学英语六级，中文母语。",
+        aboutWorkStyle: "工作方式",
+        aboutWorkStyleText: "优先理解日本玩家文化习惯，拒绝生硬直译，重视文化适配。基于SNS数据和社区反馈迭代内容，独立推动IP联动、版本活动，完成复盘沉淀。",
+        aboutGameExp: "游戏经历",
+        aboutGameExpText: "手游：刀剑乱舞、偶像梦幻祭、恋与深空、崩坏星穹铁道、蛋仔派对、第五人格、The Spike；主机NS乙女AVG：剑为君舞、NORN9，累计游玩时长1200小时以上。",
+        expHead: "实习经历",
+        exp1Title: "日语游戏运营",
+        exp1Li1: "• 本地化运营：回合制卡牌RPG手游日版全场景文案本地化润色，覆盖UI、系统、英雄、角色台词、技能、邮件等，共计4万字，适配日本玩家表达习惯。",
+        exp1Li2: "• 社区运营：社媒排期运营，联动美术完成本地化素材，按时发布社群内容；配合版本节点策划节日、限定活动，独立完成日语文案与宣发素材本地化。",
+        exp1Li3: "• 用户运营：日本社群LINE/X日常维护、VIP维护、玩家私信答疑；收集BUG、玩法建议、充值诉求，结构化整理需求同步策划研发。",
+        exp2Title: "日语输入法PM（Simeji）",
+        exp2Li1: "• 产品运营：挖掘AI生图、生视频热门玩法，完成Tab模块规划、素材上架，搭建数据监控复盘运营效果，完善AI能力矩阵，拉动用户活跃与时长增长。",
+        exp2Li2: "• 市场调研：跟踪输入法赛道、系统适配、AI迭代趋势，收集10w+用户行为数据与社媒舆情，输出洞察报告，为定位、功能规划、差异化运营提供依据。",
+        exp2Li3: "• 产品迭代：拆解需求、输出PRD，参与多方评审，对齐研发设计测试排期；跟进版本、闭环疑点，协调QA测试，保障按期上线。",
+        exp3Title: "游戏直播创作者运营（TikTok Live Japan）",
+        exp3Li1: "• 社区运营Discord：以拉新、留存主播为目标搭建社群，搭建用户标签化管理体系，快速响应反馈，吸引500+新用户入群，提升主播活跃度留存。",
+        exp3Li2: "• IP营销：统筹第五人格日区出海联动项目，对接需求、资源协调、报价合同推进，落地IP联名活动，提升游戏曝光下载转化，强化厂商与平台生态。",
+        exp3Li3: "• 监修对接：联动素材、直播宣发前置校验，排查调性偏差，提交版权方官方监修；同步修改意见给50+创作者跟进整改，定稿闭环。",
+        eduHead: "教育背景",
+        edu1Major: "日语语言文学专业（日语大一班助教）",
+        edu1Info: "GPA 3.8/4.5；主修课程：AI翻译、日本文化史、跨文化研究、文学心理学、比较文学与文化研究",
+        edu2Major: "日语专业（学生会服务部干事）",
+        edu2Info: "GPA 4.2/5；主修课程：口译理论与实践、商务日语、日本文化概论、跨文化交流、日语听力",
+        projectHead: "精选项目案例",
+        imgPlaceholder: "项目封面图",
+        viewCase: "查看详情 <i class=\"fa fa-arrow-right ml-2\"></i>",
+        case1Title: "回合制卡牌RPG 日服本地化项目",
+        case1Sub: "4万字全场景文案翻译润色，UI/角色/技能/邮件全内容适配",
+        case2Title: "第五人格 日本IP联动营销项目",
+        case2Sub: "版权方对接、素材监修、创作者协同、全链路宣发管控",
+        case3Title: "Simeji日语输入法AI功能企划运营",
+        case3Sub: "AI生图生视频Tab模块策划、用户调研、数据分析、版本落地",
+        case4Title: "TikTok Live Japan Discord主播社群运营",
+        case4Sub: "主播拉新留存方案、标签体系搭建、反馈闭环，新增500+主播",
+        caseBg: "📌 项目背景",
+        caseUser: "👥 目标用户",
+        caseAnalysis: "📊 我的分析",
+        caseAction: "✅ 具体行动",
+        caseResult: "🏁 结果与复盘",
+        case1Bg: "国产回合卡牌RPG准备上线日本市场，需要对游戏内全部文本进行本地化润色，避免直译生硬，贴合日系手游表达习惯。",
+        case1User: "日系卡牌RPG玩家，重视UI易懂性、角色台词贴合人设、技能说明清晰。",
+        case1Ana: "日本玩家对机翻、中式日语敏感度高；公告、奖励、技能描述有行业固定话术，角色台词需要匹配人设语气。",
+        case1Act: "负责UI、系统、英雄、技能、活动邮件等全模块共4万字文案翻译校对；配合美术产出宣发文案，同步社媒推文原稿。",
+        case1Res: "完成上线版本本地化交付，降低玩家对翻译生硬的咨询；版本上线后持续收集社区反馈，迭代文案。",
+        case2Bg: "第五人格日本服IP联动活动，在TikTok Live渠道同步宣发，需要完整对接版权方监修、管理创作者宣发物料。",
+        case2User: "第五人格日本玩家、IP粉丝、TikTok游戏直播观众，需要严格遵守IP设定，兼顾宣传转化。",
+        case2Ana: "IP联动版权监修规则严格，需要前置检查规避设定错误；统一给创作者规范素材文案，保证宣发调性统一。",
+        case2Act: "统筹需求、资源、报价、合同推进；宣发素材前置审核、对接版权方监修；同步修改意见给50+创作者跟进整改定稿。",
+        case2Res: "IP联动活动顺利落地，提升游戏在日本的曝光与下载转化，稳固平台与游戏厂商合作生态。",
+        case3Bg: "Simeji日语输入法新增AI生图生视频功能，面向日本年轻用户，需要策划Tab模块、运营验证效果。",
+        case3User: "Simeji年轻用户，习惯在社交软件使用AI生成表情包、配图，追求操作轻量化。",
+        case3Ana: "日本年轻人有大量AI生成内容发SNS的习惯，在输入法内直接生成可以缩短使用链路，提升打开频次。",
+        case3Act: "调研热门玩法，完成Tab策划、素材上架；搭建数据看板复盘效果；整理10w+用户数据输出调研报告，输出PRD推动开发上线。",
+        case3Res: "AI功能顺利上线，带动用户活跃度与使用时长上涨；基于调研输出差异化迭代方向。",
+        case4Bg: "TikTok Live Japan需要搭建游戏主播Discord社群，用来拉新、留存日本游戏主播，提升开播率。",
+        case4User: "日本游戏主播，需要平台激励信息、直播技巧、问题反馈渠道。",
+        case4Ana: "日本主播高度依赖Discord进行信息交流；搭建标签体系可以快速分类诉求，提升响应速度，增强归属感。",
+        case4Act: "社群方案策划，搭建标签管理体系，快速响应主播问题，定向做拉新激励，持续输出平台信息。",
+        case4Res: "成功吸引500+新主播入群，主播开播活跃度、留存率明显提升，稳定创作者沟通渠道。",
+        skillHead: "专业技能",
+        skill1Title: "日语本地化 & 文案",
+        skill1Desc: "游戏公告、SNS推文、活动文案撰写、文化适配、文案校对、日式表达调整",
+        skill2Title: "日本社区运营",
+        skill2Desc: "X / LINE / Discord 账号运维、评论区维护、舆情监控、粉丝互动、创作者运营",
+        skill3Title: "IP活动策划",
+        skill3Desc: "IP联名、线上活动企划、版权监修对接、规则撰写、素材审核、落地复盘",
+        skill4Title: "用户反馈管理",
+        skill4Desc: "玩家反馈收集、分类整理、周报输出，打通社区-本地化-产品团队",
+        skill5Title: "数据分析&市场调研",
+        skill5Desc: "SNS曝光互动统计、用户行为分析、竞品调研、市场洞察报告撰写",
+        skill6Title: "产品交付",
+        skill6Desc: "PRD文档撰写、需求拆解、跨团队对齐、QA协同、版本排期与上线管理",
+        certHead: "证书荣誉",
+        contactHead: "联系方式",
+        contactDesc: "如果你对我的经历和项目感兴趣，欢迎发邮件联系。",
+        resumeHead: "简历",
+        resumeSub: "完整简历PDF下载",
+        resumeBtn: "下载简历PDF",
+        resumeTip: "👉 使用说明：简历PDF命名 resume.pdf，和html放在同一个文件夹内才能下载",
+        footerSub: "面向日本游戏运营求职作品集"
+    },
+    en: {
+        navAbout: "About Me",
+        navExp: "Internships",
+        navEdu: "Education",
+        navProject: "Projects",
+        navSkill: "Skills",
+        navCert: "Certificates",
+        navContact: "Contact",
+        navResume: "Resume",
+        heroTag: "GAME OP / JP COMMUNITY / PRODUCT OP",
+        heroTitle: "Japan Market Game Operation | Japanese Community & Product Operation",
+        heroDesc: "JLPT N1 & TEM-8 Japanese. Hands-on experience in game localization, Discord/X/LINE community management, IP campaign marketing and product operation. Able to design localized content and build user feedback loops from Japanese player perspective.",
+        heroBtnProject: "View Internships",
+        heroBtnResume: "Download Resume",
+        aboutHead: "About Me",
+        aboutJobDir: "Career Goal",
+        aboutJobDirText: "Target roles: Japan market game operation, Japanese community operation, product operation. Capable of end-to-end work including localization copywriting, SNS operation, IP campaign planning and user feedback management.",
+        aboutLang: "Language",
+        aboutLangText: "JLPT N1, TEM-8 Japanese. Able to write business Japanese notices, social posts and coordinate with IP holders. CET-6 English, native Chinese.",
+        aboutWorkStyle: "Working Style",
+        aboutWorkStyleText: "Prioritize Japanese player culture and cultural adaptation instead of literal translation. Iterate content based on SNS data & community feedback, lead IP campaigns and version events independently and run post-campaign reviews.",
+        aboutGameExp: "Game Experience",
+        aboutGameExpText: "Mobile: Ensemble Stars, Love and Deepspace, Honkai: Star Rail, Eggy Party, Identity V, The Spike. NS Otome AVG: Ken ga Kimi, NORN9, over 1200 hours playtime.",
+        expHead: "Internships",
+        exp1Title: "Japanese Game Operator",
+        exp1Li1: "• Localization: Localized and polished 40k words of in-game text for a turn-based card RPG, covering UI, character lines, skill descriptions, mails, adapted for Japanese players.",
+        exp1Li2: "• Community: Social media content planning, cooperate with art team for localized assets, launch scheduled posts, design seasonal & limited-time events with Japanese copy.",
+        exp1Li3: "• User support: Daily LINE/X maintenance, VIP support, player DM reply. Collect bug reports, feature requests & payment feedback, organize structured reports for planning & dev team.",
+        exp2Title: "Product PM (Simeji Japanese IME)",
+        exp2Li1: "• Product Operation: Research trending AI image/video generation features, design Tab modules & assets, build data tracking dashboards, improve AI functions to boost user activity & session time.",
+        exp2Li2: "• Market Research: Track IME industry trend, OS compatibility and AI roadmap. Analyze 100k+ user behavior & social comments, write insight reports for positioning & differentiated strategy.",
+        exp2Li3: "• Delivery: Break down requirements, write PRDs, join multi-team reviews, align timeline with dev/design/QA, coordinate testing to guarantee on-time release.",
+        exp3Title: "Game Creator Operation (TikTok Live Japan)",
+        exp3Li1: "• Discord Community: Build creator community for acquisition & retention, implement tag management system, fast feedback handling. Attracted 500+ new creators and improved streamer activity & retention.",
+        exp3Li2: "• IP Marketing: Lead Identity V Japan IP collaboration project, coordinate requirements, resources, quotation & contracts. Deliver IP co-brand campaign, boost exposure & downloads, strengthen platform-game ecosystem.",
+        exp3Li3: "• IP Review: Pre-check promotion materials & live scripts, align tone with IP. Submit assets for copyright review, distribute revision notes to 50+ creators and close feedback loop.",
+        eduHead: "Education",
+        edu1Major: "Japanese Language & Literature (TA for Japanese freshman class)",
+        edu1Info: "GPA:3.8/4.5. Courses: AI Translation, Japanese Cultural History, Cross-cultural Studies, Literary Psychology, Comparative Literature & Culture",
+        edu2Major: "Japanese Major (Student Union Service Dept.)",
+        edu2Info: "GPA:4.2/5. Courses: Interpreting Theory & Practice, Business Japanese, Japanese Culture, Cross-cultural Communication, Japanese Listening",
+        projectHead: "Selected Projects",
+        imgPlaceholder: "Project Cover",
+        viewCase: "View Case Study <i class=\"fa fa-arrow-right ml-2\"></i>",
+        case1Title: "Turn-based Card RPG JP Localization",
+        case1Sub: "40k words full-scene localization & polish for UI, character, skill and mail texts",
+        case2Title: "Identity V Japan IP Collaboration Campaign",
+        case2Sub: "IP holder coordination, asset review, creator alignment, full promotion pipeline management",
+        case3Title: "Simeji IME AI Feature Planning & Operation",
+        case3Sub: "AI image/video Tab design, user research, data analysis & version delivery",
+        case4Title: "TikTok Live Japan Discord Creator Community",
+        case4Sub: "Creator acquisition & retention plan, tag system, feedback loop, 500+ new creators onboard",
+        caseBg: "📌 Project Background",
+        caseUser: "👥 Target Users",
+        caseAnalysis: "📊 My Analysis",
+        caseAction: "✅ Actions Taken",
+        caseResult: "🏁 Outcome & Review",
+        case1Bg: "A domestic turn-based card RPG was preparing for JP launch. Full in-game text localization was required to avoid stiff literal translation and fit Japanese mobile game conventions.",
+        case1User: "Japanese card RPG players, who value readable UI, in-character dialogue and clear skill descriptions.",
+        case1Ana: "Japanese players are sensitive to poor machine translation. Standard phrasing is widely used for notices, rewards and skill texts; character lines need tone matching.",
+        case1Act: "Translated & proofread 40k words of UI, system, hero, skill and mail content. Created promotional copy for social posts together with art team.",
+        case1Res: "Localization delivered for launch, reduced player complaints about unnatural translation. Continued iteration based on post-launch community feedback.",
+        case2Bg: "Identity V Japan IP collab campaign, promoted via TikTok Live. End-to-end IP review and creator material management were required.",
+        case2User: "Identity V Japanese players, IP fans and TikTok game live viewers. Strict IP compliance and conversion-focused promotion.",
+        case2Ana: "IP collaboration requires strict copyright review. Centralized asset guidelines ensure consistent tone across all creator posts.",
+        case2Act: "Coordinate requirement, resource, quotation and contracts. Pre-review all promo assets, communicate with IP holder, distribute revision feedback to over 50 creators.",
+        case2Res: "Collab launched successfully, lifted game exposure and downloads in Japan, strengthened partnership between platform and game vendor.",
+        case3Bg: "Simeji Japanese IME planned to add AI image/video generation features for young Japanese users, requiring Tab planning and operation validation.",
+        case3User: "Young Simeji users who create AI stickers & images for social sharing and prefer lightweight workflows.",
+        case3Ana: "Young Japanese users actively share AI-generated content on SNS. Inline generation inside the keyboard shortens user journey and increases opening frequency.",
+        case3Act: "Research trending features, design Tab layout & assets, build data dashboard, analyze 100k+ user records, write PRD and push development to release.",
+        case3Res: "AI feature launched successfully, lifted user activity and session length. Differentiated iteration roadmap proposed from research.",
+        case4Bg: "TikTok Live Japan built Discord creator community to recruit and retain Japanese game streamers and boost live rate.",
+        case4User: "Japanese game streamers, looking for incentive info, streaming guides and a reliable feedback channel.",
+        case4Ana: "Japanese creators heavily rely on Discord for communication. Tag-based ticket system accelerates response and improves community belonging.",
+        case4Act: "Design community rules & tag system, handle creator inquiries, run acquisition incentives and share official platform updates.",
+        case4Res: "500+ new creators joined, live frequency and retention improved, stable communication channel built.",
+        skillHead: "Skills",
+        skill1Title: "JP Localization & Copywriting",
+        skill1Desc: "Game notice, SNS post, event copy writing, cultural adaptation, proofreading, natural Japanese tuning",
+        skill2Title: "JP Community Operation",
+        skill2Desc: "X / LINE / Discord management, comment moderation, sentiment monitoring, fan & creator engagement",
+        skill3Title: "IP & Campaign Planning",
+        skill3Desc: "IP co-brand, online campaign design, IP review coordination, rule writing, asset audit & post-review",
+        skill4Title: "User Feedback Management",
+        skill4Desc: "Collect & categorize player feedback, weekly report, align community-localization-product teams",
+        skill5Title: "Data & Market Research",
+        skill5Desc: "SNS impression & engagement tracking, user behavior analysis, competitor research, market report writing",
+        skill6Title: "Product Delivery",
+        skill6Desc: "PRD writing, requirement breakdown, cross-team alignment, QA coordination, release scheduling",
+        certHead: "Certificates & Awards",
+        contactHead: "Contact",
+        contactDesc: "Feel free to reach out by email if you are interested in my experience and projects.",
+        resumeHead: "Resume",
+        resumeSub: "Download full resume PDF",
+        resumeBtn: "Download Resume PDF",
+        resumeTip: "👉 Instruction: Name your resume file resume.pdf and place it with this HTML file to enable download.",
+        footerSub: "Portfolio for Japanese game operation job application"
+    }
+};
+
+let currentLang = "ja";
+const langNameMap = {ja:"日本語",zh:"中文",en:"English"};
+
+// apply language
+function applyLang(langKey){
+    currentLang = langKey;
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        if(langData[langKey][key]){
+            el.innerHTML = langData[langKey][key];
+        }
+    })
+    document.getElementById("currentLangDesktop").innerText = langNameMap[langKey];
+    document.documentElement.lang = langKey;
+}
+
+// desktop dropdown
+const langBtnDesktop = document.getElementById("langBtnDesktop");
+const langMenuDesktop = document.getElementById("langMenuDesktop");
+langBtnDesktop.addEventListener("click",(e)=>{
+    e.stopPropagation();
+    langMenuDesktop.classList.toggle("show");
+})
+langMenuDesktop.querySelectorAll("button").forEach(btn=>{
+    btn.onclick = ()=>{
+        applyLang(btn.dataset.lang);
+        langMenuDesktop.classList.remove("show");
+    }
+})
+document.addEventListener("click",()=>langMenuDesktop.classList.remove("show"));
+
+// mobile lang buttons
+document.querySelectorAll(".mobile-lang-btn").forEach(btn=>{
+    btn.onclick = ()=>{
+        applyLang(btn.dataset.lang);
+    }
+})
+
+// mobile menu toggle
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', ()=>{
+    mobileMenu.classList.toggle('hidden');
+})
+mobileMenu.querySelectorAll('a').forEach(link=>{
+    link.onclick = ()=> mobileMenu.classList.add('hidden');
+})
+
+// Nav scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 50){
+        navbar.classList.add('nav-scrolled');
+    }else{
+        navbar.classList.remove('nav-scrolled');
+    }
+})
+
+// Fade in animation on scroll
+const fadeItems = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting) entry.target.classList.add('active');
+    })
+},{threshold:0.15})
+fadeItems.forEach(el=>observer.observe(el));
+
+// Project modal
+const modal = document.getElementById('caseModal');
+const closeModal = document.getElementById('closeModal');
+const caseContents = document.querySelectorAll('.case-content');
+const cards = document.querySelectorAll('.project-card');
+
+cards.forEach(card=>{
+    card.onclick = ()=>{
+        const targetId = card.dataset.target;
+        caseContents.forEach(c=>c.classList.add('hidden'));
+        document.getElementById(targetId).classList.remove('hidden');
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+})
+closeModal.onclick = ()=>{
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+modal.onclick = (e)=>{
+    if(e.target === modal){
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+}
+
+// Back to top
+const backTopBtn = document.getElementById('backTop');
+window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 600){
+        backTopBtn.classList.remove('hidden');
+    }else{
+        backTopBtn.classList.add('hidden');
+    }
+})
+backTopBtn.onclick = ()=> window.scrollTo({top:0, behavior:'smooth'})
+
+// init default lang
+applyLang("ja");
+</script>
+</body>
+</html>
